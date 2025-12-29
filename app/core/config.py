@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Config(BaseSettings):
-    app_name: str = "MyApp"
+    app_name: str = "Blogging Service"
     debug: bool = False
 
     model_config = {
