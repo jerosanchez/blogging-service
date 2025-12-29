@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: app-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-appuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-appdb}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-appuser}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi-service
+    environment:
+      DEBUG: ${DEBUG:-true}
+      APP_NAME: ${APP_NAME:-MyApp}
+
+      DATABASE_URL: postgresql://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-appdb}
+
+      APP_ENV: ${APP_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      WORKERS: ${WORKERS:-1}
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    volumes:
+      # Mount app code for hot-reload in development
+      - ${APP_VOLUME_MOUNT:-./app:/app/app}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    command: >
+      sh -c " if [ \"$$APP_ENV\" = \"production\" ]; then
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers $$WORKERS
+      else
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      fi "
+
+volumes:
+  postgres_data:
+    driver: local
