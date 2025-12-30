@@ -7,6 +7,8 @@ from alembic import context
 from app.core.config import config as settings
 from app.db.engine import Base
 
+# pylint: disable=no-member
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
