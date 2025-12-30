@@ -36,7 +36,7 @@ services:
       - "${APP_PORT:-8000}:8000"
     volumes:
       # Mount app code for hot-reload in development
-      - ${APP_VOLUME_MOUNT:-./app:/app/app}
+      - ${APP_VOLUME_MOUNT:-.:/app}
     depends_on:
       db:
         condition: service_healthy
