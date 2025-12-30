@@ -1,8 +1,30 @@
+# Installation and setup
+
 install:
 	@echo "Installing application..."
 	@python3.13 -m venv .venv
 	@. .venv/bin/activate && \
 		pip install -e .
+
+clean:
+	@echo "Cleaning up..."
+	@rm -rf .venv
+	@rm -rf __pycache__
+	@rm -rf **/__pycache__
+	@rm -rf *.pyc
+	@rm -rf **/*.pyc
+	@rm -rf *.pyo
+	@rm -rf **/*.pyo
+	@rm -rf *.egg-info
+	@rm -rf **/*.egg-info
+	@rm -rf .pytest_cache
+	@rm -rf .mypy_cache
+	@rm -rf .coverage
+	@rm -rf htmlcov
+
+.PHONY: install clean
+
+## Code quality
 
 format:
 	@echo "Formatting code..."
@@ -21,13 +43,25 @@ test:
 	@. .venv/bin/activate && \
 		pytest test/
 
-build:
-	@echo "Building application..."
+precommit: format lint test
+	@echo "Pre-commit checks passed."
 
-deploy:
-	@echo "Deploying application..."
+.PHONY: format lint test precommit
 
-all: install format lint test build deploy
+## Database management
+
+db-revision: ## Create a new migration
+	@read -p "Enter migration message: " msg; \
+	@. .venv/bin/activate && \
+		alembic revision --autogenerate -m \"$$msg\""
+
+db-migrate: ## Run all database migrations
+	@. .venv/bin/activate && \
+		alembic upgrade head
+
+.PHONY: db-revision db-migrate
+
+## Docker Compose management
 
 start:
 	@echo "Starting services with Docker Compose..."
@@ -37,39 +71,14 @@ stop:
 	@echo "Stopping services with Docker Compose..."
 	@docker compose down
 
+.PHONY: start stop
 
-db-reset: ## Reset Docker PostgreSQL volumes
-	@echo "WARNING: This will delete all PostgreSQL data!"
-	@read -p "Are you sure? (y/N): " confirm && [ "$$confirm" = "y" ] || [ "$$confirm" = "Y" ]
-	docker compose -f docker-compose.yml down -v
-	docker volume prune -f
+# Application lifecycle
 
-db-revision: ## Create a new migration
-	@read -p "Enter migration message: " msg; \
-	@. .venv/bin/activate && \
-		alembic revision --autogenerate -m \"$$msg\""
+build:
+	@echo "Building application..."
 
-db-migrate: ## Run database migrations
-	@. .venv/bin/activate && \
-		alembic upgrade head
+deploy:
+	@echo "Deploying application..."
 
-precommit: format lint test
-	@echo "Pre-commit checks passed."
-
-clean:
-	@echo "Cleaning up..."
-	@rm -rf .venv
-	@rm -rf __pycache__
-	@rm -rf **/__pycache__
-	@rm -rf *.pyc
-	@rm -rf **/*.pyc
-	@rm -rf *.pyo
-	@rm -rf **/*.pyo
-	@rm -rf *.egg-info
-	@rm -rf **/*.egg-info
-	@rm -rf .pytest_cache
-	@rm -rf .mypy_cache
-	@rm -rf .coverage
-	@rm -rf htmlcov
-
-.PHONY: install format lint test build deploy all start stop precommit clean
+.PHONY: build deploy

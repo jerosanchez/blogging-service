@@ -3,15 +3,15 @@ services:
     image: postgres:16-alpine
     container_name: blogging-db
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-appuser}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-      POSTGRES_DB: ${POSTGRES_DB:-appdb}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-db}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - blogging_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-appuser}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,7 +27,7 @@ services:
       DEBUG: ${DEBUG:-true}
       APP_NAME: ${APP_NAME:-"Blogging Service"}
 
-      DATABASE_URL: postgresql://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-appdb}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-db}
 
       APP_ENV: ${APP_ENV:-development}
       LOG_LEVEL: ${LOG_LEVEL:-info}
@@ -49,5 +49,5 @@ services:
       fi "
 
 volumes:
-  postgres_data:
+  blogging_db_data:
     driver: local
