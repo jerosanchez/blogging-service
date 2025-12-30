@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
@@ -11,7 +12,8 @@ from app.db.engine import Base
 config = context.config
 
 # Set the SQLAlchemy URL dynamically from settings
-config.set_main_option("sqlalchemy.url", settings.db_url)
+db_url = os.environ.get("ALEMBIC_DB_URL", settings.db_url)
+config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

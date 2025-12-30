@@ -6,8 +6,9 @@ from pydantic_settings import BaseSettings
 # Always use the CWD to find the .env at the project root
 env_path = os.path.join(os.getcwd(), ".env")
 
-# You can remove load_dotenv if only using Pydantic, but it's fine to keep for now
-load_dotenv(env_path)
+# Only load .env if it exists
+if os.path.exists(env_path):
+    load_dotenv(env_path)
 
 
 class Config(BaseSettings):
