@@ -41,7 +41,7 @@ lint:
 test:
 	@echo "Running tests..."
 	@. .venv/bin/activate && \
-		pytest test/
+		PYTHONPATH=. pytest test/
 
 precommit: format lint test
 	@echo "Pre-commit checks passed."
