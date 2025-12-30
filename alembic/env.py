@@ -5,7 +5,7 @@ from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 from app.core.config import config as settings
-from app.db.engine import Base
+from app.core.db_engine import Base
 
 # pylint: disable=no-member
 
