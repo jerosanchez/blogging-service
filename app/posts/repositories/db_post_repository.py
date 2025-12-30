@@ -2,17 +2,8 @@ from sqlalchemy.orm import Session
 
 from app.posts.models.db_schema import Post as DBPost
 from app.posts.models.domain import Post
+from app.posts.repositories.mappers import map_db_post as map_to_domain
 from app.posts.services.post_service import PostRepositoryABC
-
-
-def map_to_domain(db_post: DBPost) -> Post:
-    return Post(
-        id=db_post.id,
-        title=db_post.title,
-        content=db_post.content,
-        published=db_post.published,
-        rating=db_post.rating,
-    )
 
 
 class DBPostRepository(PostRepositoryABC):
