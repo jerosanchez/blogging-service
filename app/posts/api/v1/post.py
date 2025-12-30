@@ -3,16 +3,16 @@ from fastapi import APIRouter, Depends
 from app.core.db_engine import SessionLocal
 from app.posts.models.dto import PostRead
 from app.posts.repositories.db_post_repository import DBPostRepository
-from app.posts.services.post_service import PostService
+from app.posts.services.post_service import PostRepositoryABC, PostService
 
 router = APIRouter()
 
 
-def get_post_repository():
+def get_post_repository() -> PostRepositoryABC:
     return DBPostRepository(session=SessionLocal())
 
 
-def get_post_service():
+def get_post_service() -> PostService:
     return PostService(repository=get_post_repository())
 
 

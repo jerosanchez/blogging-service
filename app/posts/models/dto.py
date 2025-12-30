@@ -11,7 +11,7 @@ class PostBase(BaseModel):
     published: bool = True
     rating: Optional[int] = None
 
-    class Config:
+    class ConfigDict:
         orm_mode = True
 
 
