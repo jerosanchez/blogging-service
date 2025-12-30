@@ -38,7 +38,7 @@ make install
 
 This will create a virtual environment (if it doesn't exist) and install all Python dependencies listed in `requirements.txt`.
 
-### 4. Run
+### 5. Run
 
 Start the FastAPI service locally:
 
@@ -50,6 +50,6 @@ Once the server is running, open your browser and go to [http://localhost:8000/]
 
 You can also check the interactive API docs at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-### 5. Contributing
+### 6. Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) file for guidelines on how to conbtribute to this project.

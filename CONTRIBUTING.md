@@ -85,6 +85,7 @@ The main folders and files in this project are:
   - **clients/**: Clients for internal and third-party services.
   - **core/**: Cross-cutting concerns: config, logging, utilities, etc.
   - **db/**: Database schemas, migrations, and related database setup.
+  - **domain/**: Business models, framework-agnostic dataclasses.
   - **models/**: Pydantic models and validation logic.
   - **repositories/**: Database access logic and remote service integration.
   - **services/**: Business logic and reusable service functions.
