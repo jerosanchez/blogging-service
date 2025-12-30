@@ -59,6 +59,11 @@ db-migrate: ## Run all database migrations
 	@. .venv/bin/activate && \
 		alembic upgrade head
 
+db-sample-data: ## Insert sample data into the database
+	@docker exec -i blogging-db \
+		psql -U user -d db < scripts/insert_sample_data.sql
+	@echo "Sample data inserted."
+
 .PHONY: db-revision db-migrate
 
 ## Docker Compose management
