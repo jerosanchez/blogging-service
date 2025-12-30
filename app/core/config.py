@@ -14,9 +14,12 @@ class Config(BaseSettings):
     postgres_port: int = 5432
     postgres_db: str = "blogdb"
 
-    db_url: str = (
-        f"postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_db}"
-    )
+    @property
+    def db_url(self) -> str:
+        return (
+            f"postgresql+psycopg://{self.postgres_user}:{self.postgres_password}"
+            f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+        )
 
     model_config = {
         "env_file": ".env",

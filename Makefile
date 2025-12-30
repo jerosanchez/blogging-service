@@ -52,8 +52,8 @@ precommit: format lint test
 
 db-revision: ## Create a new migration
 	@read -p "Enter migration message: " msg; \
-	@. .venv/bin/activate && \
-		alembic revision --autogenerate -m \"$$msg\""
+	. .venv/bin/activate && \
+		alembic revision --autogenerate -m "$$msg"
 
 db-migrate: ## Run all database migrations
 	@. .venv/bin/activate && \
