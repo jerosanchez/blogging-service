@@ -41,7 +41,7 @@ lint:
 test:
 	@echo "Running tests..."
 	@. .venv/bin/activate && \
-		pytest test/
+		PYTHONPATH=. pytest test/
 
 precommit: format lint test
 	@echo "Pre-commit checks passed."
@@ -58,6 +58,11 @@ db-revision: ## Create a new migration
 db-migrate: ## Run all database migrations
 	@. .venv/bin/activate && \
 		alembic upgrade head
+
+db-sample-data: ## Insert sample data into the database
+	@docker exec -i blogging-db \
+		psql -U user -d db < scripts/insert_sample_data.sql
+	@echo "Sample data inserted."
 
 .PHONY: db-revision db-migrate
 
