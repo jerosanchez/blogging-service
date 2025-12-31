@@ -1,12 +1,10 @@
 from dataclasses import dataclass
 from typing import Optional
-from uuid import UUID
 
 
 @dataclass
-class Post:
-    id: UUID
+class PostCreateDTO:
     title: str
     content: str
-    published: bool = True
+    published: bool = False
     rating: Optional[int] = None
