@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
-from app.posts.models.db_schema import Post as DBPost
-from app.posts.models.domain import Post
-from app.posts.repositories.mappers import map_db_post as map_to_domain
+from app.posts.domain.post import Post
+from app.posts.repositories.mappers import map_post as map_to_domain
+from app.posts.repositories.models import DBPost
 from app.posts.services.post_service import PostRepositoryABC
 
 

@@ -1,8 +1,8 @@
-from app.posts.models.db_schema import Post as DBPost
-from app.posts.models.domain import Post
+from app.posts.domain.post import Post
+from app.posts.repositories.models import DBPost
 
 
-def map_db_post(db_post: DBPost) -> Post:
+def map_post(db_post: DBPost) -> Post:
     return Post(
         id=db_post.id,
         title=db_post.title,

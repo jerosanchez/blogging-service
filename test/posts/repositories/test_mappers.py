@@ -1,8 +1,8 @@
 import uuid
 
-from app.posts.models.db_schema import Post as DBPost
-from app.posts.models.domain import Post
-from app.posts.repositories.mappers import map_db_post
+from app.posts.domain.post import Post
+from app.posts.repositories.mappers import map_post
+from app.posts.repositories.models import DBPost
 
 
 def test_map_db_post_maps_all_fields():
@@ -14,7 +14,7 @@ def test_map_db_post_maps_all_fields():
         published=False,
         rating=7,
     )
-    result = map_db_post(db_post)
+    result = map_post(db_post)
     assert isinstance(result, Post)
     assert result.id == test_id
     assert result.title == "Test Title"
@@ -31,7 +31,7 @@ def test_map_db_post_maps_missing_rating():
         content="Test Content",
         published=True,
     )
-    result = map_db_post(db_post)
+    result = map_post(db_post)
     assert result.id == test_id
     assert result.title == "Test Title"
     assert result.content == "Test Content"

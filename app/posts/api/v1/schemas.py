@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 
 class PostBase(BaseModel):
-    id: uuid.UUID
     title: str
     content: str
     published: bool = True
@@ -15,5 +14,5 @@ class PostBase(BaseModel):
         orm_mode = True
 
 
-class PostRead(PostBase):
-    pass
+class PostReadResponse(PostBase):
+    id: uuid.UUID

@@ -5,8 +5,8 @@ from unittest.mock import MagicMock
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from app.posts.api.v1.post import get_post_service, router
-from app.posts.models.domain import Post
+from app.posts.api.v1.router import get_post_service, router
+from app.posts.domain.post import Post
 
 mock_service = MagicMock()
 

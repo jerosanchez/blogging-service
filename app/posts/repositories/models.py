@@ -13,7 +13,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 
 
-class Post(Base):
+class DBPost(Base):
     __tablename__ = "posts"
 
     id: Mapped[uuid.UUID] = mapped_column(

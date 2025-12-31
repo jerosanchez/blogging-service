@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.posts.models.domain import Post
+from app.posts.domain.post import Post
 
 
 class PostRepositoryABC(ABC):
