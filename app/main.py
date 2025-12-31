@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from app.core.config import config
 from app.core.logging import setup_logging
-from app.posts.api.v1.router import router as posts_router
+from app.posts.api.v1.posts import router as posts_router
 
 setup_logging()
 

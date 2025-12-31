@@ -16,3 +16,7 @@ class PostBase(BaseModel):
 
 class PostReadResponse(PostBase):
     id: uuid.UUID
+
+
+class PostCreateRequest(PostBase):
+    pass

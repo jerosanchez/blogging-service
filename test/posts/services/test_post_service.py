@@ -3,12 +3,12 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from app.posts.services.post_service import PostRepositoryABC, PostService
+from app.posts.services.post_service import IPostRepository, PostService
 
 
 @pytest.fixture
 def mock_repository() -> MagicMock:
-    return MagicMock(spec=PostRepositoryABC)
+    return MagicMock(spec=IPostRepository)
 
 
 @pytest.fixture

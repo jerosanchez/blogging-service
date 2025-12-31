@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from app.posts.api.v1.router import get_post_service, router
+from app.posts.api.v1.posts import get_post_service, router
 from app.posts.domain.post import Post
 
 mock_service = MagicMock()
@@ -26,12 +26,15 @@ def assert_post_equal(response_post: dict[str, Any], domain_post: Post) -> None:
 
 
 def test_read_posts_returns_posts():
+    # Arrange
     returned_posts = [build_post() for _ in range(3)]
 
     mock_service.get_all_posts.return_value = returned_posts
 
+    # Act
     response = client.get("/posts")
 
+    # Assert
     assert response.status_code == 200
     data: list[dict[str, Any]] = response.json()
     assert isinstance(data, list)
@@ -42,12 +45,15 @@ def test_read_posts_returns_posts():
 
 
 def test_read_posts_returns_empty_list():
+    # Arrange
     returned_posts: list[Post] = []
 
     mock_service.get_all_posts.return_value = returned_posts
 
+    # Act
     response = client.get("/posts")
 
+    # Assert
     assert response.status_code == 200
     data: list[dict[str, Any]] = response.json()
     assert isinstance(data, list)

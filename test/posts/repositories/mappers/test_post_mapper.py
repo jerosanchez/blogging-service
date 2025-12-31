@@ -1,21 +1,26 @@
 import uuid
 
-from app.posts.domain.post import Post
-from app.posts.repositories.mappers import map_post
-from app.posts.repositories.models import DBPost
+from app.posts.domain.post import Post as DomainPost
+from app.posts.repositories.mappers.post import to_domain
+from app.posts.repositories.models.post import Post as DBPost
 
 
-def test_map_db_post_maps_all_fields():
+def test_to_domain_maps_all_fields():
+    # Arrange
     test_id = uuid.uuid4()
-    db_post = DBPost(
+    post = DBPost(
         id=test_id,
         title="Test Title",
         content="Test Content",
         published=False,
         rating=7,
     )
-    result = map_post(db_post)
-    assert isinstance(result, Post)
+
+    # Act
+    result = to_domain(post)
+
+    # Assert
+    assert isinstance(result, DomainPost)
     assert result.id == test_id
     assert result.title == "Test Title"
     assert result.content == "Test Content"
@@ -23,15 +28,21 @@ def test_map_db_post_maps_all_fields():
     assert result.rating == 7
 
 
-def test_map_db_post_maps_missing_rating():
+def test_to_domain_maps_missing_rating():
+    # Arrange
     test_id = uuid.uuid4()
-    db_post = DBPost(
+    post = DBPost(
         id=test_id,
         title="Test Title",
         content="Test Content",
         published=True,
     )
-    result = map_post(db_post)
+
+    # Act
+    result = to_domain(post)
+
+    # Assert
+    assert isinstance(result, DomainPost)
     assert result.id == test_id
     assert result.title == "Test Title"
     assert result.content == "Test Content"
