@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from app.posts.domain.post import Post
 from app.posts.services.dtos.post import PostCreateDTO
+from app.posts.services.mappers.post import to_domain
 
 
 class IPostRepository(ABC):
@@ -22,10 +23,4 @@ class PostService:
         return self._repository.get_all_posts()
 
     def create_post(self, post_data: PostCreateDTO) -> Post:
-        new_post = Post(
-            title=post_data.title,
-            content=post_data.content,
-            published=post_data.published,
-            rating=post_data.rating,
-        )
-        return self._repository.add_post(new_post)
+        return self._repository.add_post(to_domain(post_data))
