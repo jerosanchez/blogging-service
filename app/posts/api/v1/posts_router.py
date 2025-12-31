@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from starlette.status import HTTP_201_CREATED
 
 from app.core.db_engine import SessionLocal
 from app.posts.api.v1.mappers.post import to_dto
@@ -22,7 +23,7 @@ async def read_posts(service: PostService = Depends(get_post_service)):
     return service.get_all_posts()
 
 
-@router.post("/posts", response_model=PostReadResponse)
+@router.post("/posts", response_model=PostReadResponse, status_code=HTTP_201_CREATED)
 async def create_post(
     post_data: PostCreateRequest,
     service: PostService = Depends(get_post_service),
