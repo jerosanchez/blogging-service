@@ -1,0 +1,11 @@
+### Create new post (happy path)
+
+POST http://localhost:4000/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "My First Post",
+  "content": "This is the content of my first post.",
+  "published": true,
+  "rating": 5
+}
