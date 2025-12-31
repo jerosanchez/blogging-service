@@ -9,3 +9,13 @@ Content-Type: application/json
   "published": true,
   "rating": 5
 }
+
+### Create new post with missing fields (happy path)
+
+POST http://localhost:4000/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "Post Without Optionals",
+  "content": "This post omits published and rating."
+}
