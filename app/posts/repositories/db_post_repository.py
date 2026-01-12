@@ -1,3 +1,6 @@
+from typing import Optional
+from uuid import UUID
+
 from sqlalchemy.orm import Session
 
 from app.posts.domain.post import Post
@@ -19,3 +22,9 @@ class DBPostRepository(IPostRepository):
         self._db.commit()
         self._db.refresh(db_post)
         return to_domain(db_post)
+
+    def get_post_by_id(self, post_id: UUID) -> Optional[Post]:
+        db_post = self._db.query(DBPost).filter(DBPost.id == post_id).first()
+        if db_post:
+            return to_domain(db_post)
+        return None

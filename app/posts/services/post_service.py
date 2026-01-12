@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from typing import Optional
+from uuid import UUID
 
 from app.posts.domain.post import Post
 from app.posts.services.dtos.post import PostCreateDTO
@@ -14,6 +16,10 @@ class IPostRepository(ABC):
     def add_post(self, post: Post) -> Post:
         pass
 
+    @abstractmethod
+    def get_post_by_id(self, post_id: UUID) -> Optional[Post]:
+        pass
+
 
 class PostService:
     def __init__(self, repository: IPostRepository):
@@ -24,3 +30,6 @@ class PostService:
 
     def create_post(self, post_data: PostCreateDTO) -> Post:
         return self._repository.add_post(to_domain(post_data))
+
+    def get_post_by_id(self, post_id: UUID) -> Optional[Post]:
+        return self._repository.get_post_by_id(post_id)

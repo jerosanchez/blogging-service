@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, HTTPException
 from starlette.status import HTTP_201_CREATED
 
 from app.core.db_engine import SessionLocal
@@ -29,3 +31,15 @@ async def create_post(
     service: PostService = Depends(get_post_service),
 ):
     return service.create_post(to_dto(post_data))
+
+
+@router.get("/posts/{post_id}", response_model=PostReadResponse)
+async def read_post(
+    post_id: UUID,
+    service: PostService = Depends(get_post_service),
+):
+    post = service.get_post_by_id(post_id)
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post not found")
+
+    return post
