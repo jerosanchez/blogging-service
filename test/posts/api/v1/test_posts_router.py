@@ -1,10 +1,11 @@
 from test.posts.helpers.factories import build_post
 from typing import Any
 from unittest.mock import MagicMock
+from uuid import UUID
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from starlette.status import HTTP_200_OK, HTTP_201_CREATED
+from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 
 from app.posts.api.v1.posts_router import get_post_service, router
 from app.posts.domain.post import Post
@@ -79,3 +80,32 @@ def test_create_post_returns_201_and_post_when_all_fields_provided():
     assert response.status_code == HTTP_201_CREATED
     data = response.json()
     assert_post_equal(data, created_post)
+
+
+def test_get_post_by_id_returns_200_and_post_when_found():
+    # Arrange
+    post_id = "e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d"
+    found_post = build_post(id=UUID(post_id))
+    mock_service.get_post_by_id.return_value = found_post
+
+    # Act
+    response = client.get(f"/posts/{post_id}")
+
+    # Assert
+    assert response.status_code == HTTP_200_OK
+    data = response.json()
+    assert_post_equal(data, found_post)
+
+
+def test_get_post_by_id_returns_404_and_message_when_not_found():
+    # Arrange
+    post_id = "00000000-0000-0000-0000-000000000000"
+    mock_service.get_post_by_id.return_value = None
+
+    # Act
+    response = client.get(f"/posts/{post_id}")
+
+    # Assert
+    assert response.status_code == HTTP_404_NOT_FOUND
+    data = response.json()
+    assert data["detail"] == "Post not found"
