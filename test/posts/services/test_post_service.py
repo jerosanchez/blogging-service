@@ -1,5 +1,6 @@
 from test.posts.helpers.factories import build_post
 from unittest.mock import MagicMock
+from uuid import UUID
 
 import pytest
 
@@ -79,3 +80,32 @@ def test_create_post_returns_created_post_with_defaults(
 
     # Assert
     assert result == expected_post
+
+
+def test_get_post_by_id_returns_post_when_found(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d")
+    expected_post = build_post(id=post_id)
+    mock_repository.get_post_by_id.return_value = expected_post
+
+    # Act
+    result = post_service.get_post_by_id(post_id)
+
+    # Assert
+    assert result == expected_post
+
+
+def test_get_post_by_id_returns_none_when_not_found(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("00000000-0000-0000-0000-000000000000")
+    mock_repository.get_post_by_id.return_value = None
+
+    # Act
+    result = post_service.get_post_by_id(post_id)
+
+    # Assert
+    assert result is None
