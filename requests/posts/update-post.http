@@ -1,5 +1,5 @@
 ### Update post with all fields (happy path)
-PUT http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+PATCH http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
 Content-Type: application/json
 
 {
@@ -9,17 +9,24 @@ Content-Type: application/json
   "rating": 10
 }
 
-### Update post with only mandatory fields (happy path)
-PUT http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+### Update post with some fields (happy path)
+PATCH http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
 Content-Type: application/json
 
 {
-  "title": "Mandatory Only",
-  "content": "Updated with only required fields."
+  "title": "Some Fields Only",
+  "content": "Updated with only some fields."
+}
+
+### Update post with no fields (happy path)
+PATCH http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+Content-Type: application/json
+
+{
 }
 
 ### Update non-existent post (sad path)
-PUT http://localhost:4000/api/v1/posts/00000000-0000-0000-0000-000000000000
+PATCH http://localhost:4000/api/v1/posts/00000000-0000-0000-0000-000000000000
 Content-Type: application/json
 
 {

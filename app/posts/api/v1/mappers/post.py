@@ -1,9 +1,18 @@
-from app.posts.api.v1.schemas.post import PostCreateRequest
-from app.posts.services.dtos.post import PostCreateDTO
+from app.posts.api.v1.schemas.post import PostCreateRequest, PostUpdateRequest
+from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
 
 
-def to_dto(post_data: PostCreateRequest) -> PostCreateDTO:
+def post_create_request_to_dto(post_data: PostCreateRequest) -> PostCreateDTO:
     return PostCreateDTO(
+        title=post_data.title,
+        content=post_data.content,
+        published=post_data.published,
+        rating=post_data.rating,
+    )
+
+
+def post_update_request_to_dto(post_data: PostUpdateRequest) -> PostUpdateDTO:
+    return PostUpdateDTO(
         title=post_data.title,
         content=post_data.content,
         published=post_data.published,

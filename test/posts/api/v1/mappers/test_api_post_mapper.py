@@ -1,4 +1,4 @@
-from app.posts.api.v1.mappers.post import to_dto
+from app.posts.api.v1.mappers.post import post_create_request_to_dto
 from app.posts.api.v1.schemas.post import PostCreateRequest
 from app.posts.services.dtos.post import PostCreateDTO
 
@@ -13,7 +13,7 @@ def test_to_dto_returns_dto_with_all_fields_when_all_fields_provided():
     )
 
     # Act
-    result = to_dto(request)
+    result = post_create_request_to_dto(request)
 
     # Assert
     assert isinstance(result, PostCreateDTO)
@@ -28,7 +28,7 @@ def test_to_dto_returns_dto_with_defaults_when_optional_fields_missing():
     request = PostCreateRequest(title="Default Title", content="Default Content")
 
     # Act
-    result = to_dto(request)
+    result = post_create_request_to_dto(request)
 
     # Assert
     assert isinstance(result, PostCreateDTO)
