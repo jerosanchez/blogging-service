@@ -3,10 +3,10 @@ from dataclasses import asdict
 from typing import Any, Dict, Optional
 from uuid import UUID
 
+from app.posts.domain import Post
 from app.posts.dtos import PostCreateDTO, PostUpdateDTO
 from app.posts.exceptions import PostNotFoundException
-from app.posts.mappers import to_domain
-from app.posts.models import Post
+from app.posts.mappers import dto_to_domain
 
 
 class IPostRepository(ABC):
@@ -35,7 +35,7 @@ class PostService:
         return self._repository.get_all_posts()
 
     def create_post(self, post_data: PostCreateDTO) -> Post:
-        return self._repository.add_post(to_domain(post_data))
+        return self._repository.add_post(dto_to_domain(post_data))
 
     def get_post_by_id(self, post_id: UUID) -> Optional[Post]:
         return self._repository.get_post_by_id(post_id)

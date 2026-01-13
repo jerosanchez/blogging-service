@@ -12,8 +12,8 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
 )
 
+from app.posts.domain import Post
 from app.posts.exceptions import PostNotFoundException
-from app.posts.models import Post
 from app.posts.routes import get_post_service, router
 
 mock_service = MagicMock()

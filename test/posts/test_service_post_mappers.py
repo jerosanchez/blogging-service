@@ -1,6 +1,6 @@
+from app.posts.domain import Post as DomainPost
 from app.posts.dtos import PostCreateDTO
-from app.posts.mappers import to_domain
-from app.posts.models import Post as DomainPost
+from app.posts.mappers import dto_to_domain
 
 
 def test_to_domain_returns_post_with_all_fields_when_all_fields_provided():
@@ -13,7 +13,7 @@ def test_to_domain_returns_post_with_all_fields_when_all_fields_provided():
     )
 
     # Act
-    result = to_domain(dto)
+    result = dto_to_domain(dto)
 
     # Assert
     assert isinstance(result, DomainPost)
@@ -31,7 +31,7 @@ def test_to_domain_returns_post_with_defaults_when_optional_fields_missing():
     )
 
     # Act
-    result = to_domain(dto)
+    result = dto_to_domain(dto)
 
     # Assert
     assert isinstance(result, DomainPost)

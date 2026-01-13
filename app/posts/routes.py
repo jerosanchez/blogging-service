@@ -5,8 +5,8 @@ from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT
 
 from app.core.db_engine import SessionLocal
 from app.posts.exceptions import PostNotFoundException
-from app.posts.mappers import post_create_request_to_dto, post_update_request_to_dto
-from app.posts.repositories.db_post_repository import DBPostRepository
+from app.posts.mappers import create_request_to_dto, update_request_to_dto
+from app.posts.repository import DBPostRepository
 from app.posts.schemas import PostCreateRequest, PostReadResponse, PostUpdateRequest
 from app.posts.service import IPostRepository, PostService
 
@@ -31,7 +31,7 @@ async def create_post(
     post_data: PostCreateRequest,
     service: PostService = Depends(get_post_service),
 ):
-    return service.create_post(post_create_request_to_dto(post_data))
+    return service.create_post(create_request_to_dto(post_data))
 
 
 @router.get("/posts/{post_id}", response_model=PostReadResponse)
@@ -53,7 +53,7 @@ async def update_post(
     service: PostService = Depends(get_post_service),
 ):
     try:
-        result = service.update_post(post_id, post_update_request_to_dto(post_data))
+        result = service.update_post(post_id, update_request_to_dto(post_data))
         if result is None:
             raise HTTPException(status_code=HTTP_204_NO_CONTENT)
         return result
