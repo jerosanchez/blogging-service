@@ -1,6 +1,6 @@
-from app.posts.mapper import post_create_request_to_dto, post_update_request_to_dto
+from app.posts.dtos import PostCreateDTO, PostUpdateDTO
+from app.posts.mappers import post_create_request_to_dto, post_update_request_to_dto
 from app.posts.schemas import PostCreateRequest, PostUpdateRequest
-from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
 
 
 def test_create_to_dto_returns_dto_with_all_fields_when_all_fields_provided():

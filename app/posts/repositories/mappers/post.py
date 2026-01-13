@@ -1,4 +1,5 @@
-from app.posts.domain.post import Post
+from posts.models import Post
+
 from app.posts.repositories.models.post import Post as DBPost
 
 

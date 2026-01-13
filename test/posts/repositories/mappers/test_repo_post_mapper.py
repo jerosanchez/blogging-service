@@ -1,6 +1,7 @@
 import uuid
 
-from app.posts.domain.post import Post as DomainPost
+from posts.models import Post as DomainPost
+
 from app.posts.repositories.mappers.post import to_db, to_domain
 from app.posts.repositories.models.post import Post as DBPost
 

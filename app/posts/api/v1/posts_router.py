@@ -1,14 +1,14 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
+from posts.api.v1.mapper import post_create_request_to_dto, post_update_request_to_dto
+from posts.api.v1.schemas import PostCreateRequest, PostReadResponse, PostUpdateRequest
+from posts.exceptions import PostNotFoundException
+from posts.service import IPostRepository, PostService
 from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 from app.core.db_engine import SessionLocal
-from app.posts.exceptions import PostNotFoundException
-from app.posts.mappers import post_create_request_to_dto, post_update_request_to_dto
 from app.posts.repositories.db_post_repository import DBPostRepository
-from app.posts.schemas import PostCreateRequest, PostReadResponse, PostUpdateRequest
-from app.posts.service import IPostRepository, PostService
 
 router = APIRouter()
 

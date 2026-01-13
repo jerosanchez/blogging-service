@@ -1,6 +1,6 @@
-from app.posts.domain.post import Post as DomainPost
-from app.posts.services.dtos.post import PostCreateDTO
-from app.posts.services.mappers.post import to_domain
+from app.posts.dtos import PostCreateDTO
+from app.posts.mappers import to_domain
+from app.posts.models import Post as DomainPost
 
 
 def test_to_domain_returns_post_with_all_fields_when_all_fields_provided():

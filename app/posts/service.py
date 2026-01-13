@@ -3,10 +3,10 @@ from dataclasses import asdict
 from typing import Any, Dict, Optional
 from uuid import UUID
 
-from app.posts.domain.post import Post
-from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
-from app.posts.services.exceptions.post import PostNotFoundException
-from app.posts.services.mappers.post import to_domain
+from app.posts.dtos import PostCreateDTO, PostUpdateDTO
+from app.posts.exceptions import PostNotFoundException
+from app.posts.mappers import to_domain
+from app.posts.models import Post
 
 
 class IPostRepository(ABC):

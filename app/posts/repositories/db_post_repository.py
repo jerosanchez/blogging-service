@@ -3,10 +3,10 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from app.posts.domain.post import Post
+from app.posts.models import Post
 from app.posts.repositories.mappers.post import to_db, to_domain
 from app.posts.repositories.models.post import Post as DBPost
-from app.posts.services.post_service import IPostRepository
+from app.posts.service import IPostRepository
 
 
 class DBPostRepository(IPostRepository):
