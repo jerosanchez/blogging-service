@@ -61,5 +61,13 @@ async def update_post(
         _report_post_not_found()
 
 
+@router.delete("/posts/{post_id}", status_code=HTTP_204_NO_CONTENT)
+async def delete_post(
+    post_id: UUID,
+    service: PostService = Depends(get_post_service),
+):
+    service.delete_post(post_id)
+
+
 def _report_post_not_found():
     raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Post not found")

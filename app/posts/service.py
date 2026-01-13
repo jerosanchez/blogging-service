@@ -26,6 +26,10 @@ class IPostRepository(ABC):
     def update_post(self, post_id: UUID, post: Dict[str, Any]) -> Optional[Post]:
         pass
 
+    @abstractmethod
+    def delete_post(self, post_id: UUID) -> bool:
+        pass
+
 
 class PostService:
     def __init__(self, repository: IPostRepository):
@@ -51,3 +55,7 @@ class PostService:
             raise PostNotFoundException(f"Post with id {post_id} not found")
 
         return updated_post
+
+    def delete_post(self, post_id: UUID) -> None:
+        self._repository.delete_post(post_id)
+        return None

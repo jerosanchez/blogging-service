@@ -38,6 +38,14 @@ class DBPostRepository(IPostRepository):
         self._db.refresh(db_post)
         return db_to_domain(db_post)
 
+    def delete_post(self, post_id: UUID) -> bool:
+        db_post = self._db.query(DBPost).filter(DBPost.id == post_id).first()
+        if not db_post:
+            return False
+        self._db.delete(db_post)
+        self._db.commit()
+        return True
+
     def _patch_db_post(self, db_post: DBPost, post: Dict[str, Any]):
         for key, value in post.items():
             if hasattr(db_post, key) and value is not None:
