@@ -5,10 +5,16 @@ from uuid import UUID
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+)
 
 from app.posts.api.v1.posts_router import get_post_service, router
 from app.posts.domain.post import Post
+from app.posts.services.exceptions.post import PostNotFoundException
 
 mock_service = MagicMock()
 
@@ -104,6 +110,53 @@ def test_get_post_by_id_returns_404_and_message_when_not_found():
 
     # Act
     response = client.get(f"/posts/{post_id}")
+
+    # Assert
+    assert response.status_code == HTTP_404_NOT_FOUND
+    data = response.json()
+    assert data["detail"] == "Post not found"
+
+
+def test_update_post_returns_200_and_updated_post():
+    # Arrange
+    post_id = "12345678-1234-5678-1234-567812345678"
+    update_data = {"title": "Updated Title", "content": "Updated Content"}
+    updated_post = build_post(
+        id=UUID(post_id), title="Updated Title", content="Updated Content"
+    )
+    mock_service.update_post.return_value = updated_post
+
+    # Act
+    response = client.patch(f"/posts/{post_id}", json=update_data)
+
+    # Assert
+    assert response.status_code == HTTP_200_OK
+    data = response.json()
+    assert_post_equal(data, updated_post)
+
+
+def test_update_post_returns_204_when_no_fields_to_update():
+    # Arrange
+    post_id = "11111111-1111-1111-1111-111111111111"
+    update_data = {}  # No fields provided
+    mock_service.update_post.return_value = None
+
+    # Act
+    response = client.patch(f"/posts/{post_id}", json=update_data)
+
+    # Assert
+    assert response.status_code == HTTP_204_NO_CONTENT
+    assert response.content == b""
+
+
+def test_update_post_returns_404_when_post_not_found():
+    # Arrange
+    post_id = "99999999-9999-9999-9999-999999999999"
+    update_data = {"title": "Doesn't matter"}
+    mock_service.update_post.side_effect = PostNotFoundException
+
+    # Act
+    response = client.patch(f"/posts/{post_id}", json=update_data)
 
     # Assert
     assert response.status_code == HTTP_404_NOT_FOUND

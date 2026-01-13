@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 from app.core.db_engine import SessionLocal
 from app.posts.api.v1.mappers.post import (
@@ -60,7 +60,10 @@ async def update_post(
     service: PostService = Depends(get_post_service),
 ):
     try:
-        return service.update_post(post_id, post_update_request_to_dto(post_data))
+        result = service.update_post(post_id, post_update_request_to_dto(post_data))
+        if result is None:
+            raise HTTPException(status_code=HTTP_204_NO_CONTENT)
+        return result
     except PostNotFoundException:
         _report_post_not_found()
 
