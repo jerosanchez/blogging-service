@@ -1,0 +1,35 @@
+### Update post with all fields (happy path)
+PATCH http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+Content-Type: application/json
+
+{
+  "title": "All Fields Post",
+  "content": "Updated content with all fields.",
+  "published": false,
+  "rating": 10
+}
+
+### Update post with some fields (happy path)
+PATCH http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+Content-Type: application/json
+
+{
+  "title": "Some Fields Only",
+  "content": "Updated with only some fields."
+}
+
+### Update post with no fields (happy path)
+PATCH http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+Content-Type: application/json
+
+{
+}
+
+### Update non-existent post (sad path)
+PATCH http://localhost:4000/api/v1/posts/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "title": "Should Fail",
+  "content": "This should return not found."
+}

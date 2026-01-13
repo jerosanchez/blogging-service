@@ -20,3 +20,10 @@ class PostReadResponse(PostBase):
 
 class PostCreateRequest(PostBase):
     pass
+
+
+class PostUpdateRequest(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    published: Optional[bool] = None
+    rating: Optional[int] = None
