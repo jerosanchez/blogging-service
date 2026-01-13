@@ -1,4 +1,4 @@
-from app.posts.api.v1.schemas.post import PostCreateRequest, PostUpdateRequest
+from app.posts.schemas import PostCreateRequest, PostUpdateRequest
 from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
 
 

@@ -1,8 +1,5 @@
-from app.posts.api.v1.mappers.post import (
-    post_create_request_to_dto,
-    post_update_request_to_dto,
-)
-from app.posts.api.v1.schemas.post import PostCreateRequest, PostUpdateRequest
+from app.posts.mapper import post_create_request_to_dto, post_update_request_to_dto
+from app.posts.schemas import PostCreateRequest, PostUpdateRequest
 from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
 
 

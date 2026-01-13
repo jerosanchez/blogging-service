@@ -4,16 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 from app.core.db_engine import SessionLocal
-from app.posts.api.v1.mappers.post import (
-    post_create_request_to_dto,
-    post_update_request_to_dto,
-)
-from app.posts.api.v1.schemas.post import (
-    PostCreateRequest,
-    PostReadResponse,
-    PostUpdateRequest,
-)
+from app.posts.mapper import post_create_request_to_dto, post_update_request_to_dto
 from app.posts.repositories.db_post_repository import DBPostRepository
+from app.posts.schemas import PostCreateRequest, PostReadResponse, PostUpdateRequest
 from app.posts.services.exceptions.post import PostNotFoundException
 from app.posts.services.post_service import IPostRepository, PostService
 
