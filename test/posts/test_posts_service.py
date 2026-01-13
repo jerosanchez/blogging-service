@@ -157,3 +157,33 @@ def test_update_post_raises_exception_when_repository_returns_none(
     with pytest.raises(PostNotFoundException) as exc_info:
         post_service.update_post(post_id, update_data)
     assert str(post_id) in str(exc_info.value)
+
+
+def test_delete_post_returns_none_when_not_found_or_already_deleted(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("99999999-9999-9999-9999-999999999999")
+    mock_repository.delete_post.return_value = (
+        False  # Simulate not found or already deleted
+    )
+
+    # Act
+    result = post_service.delete_post(post_id)
+
+    # Assert
+    assert result is None
+
+
+def test_delete_post_returns_none_when_deletion_is_successful(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("99999999-9999-9999-9999-999999999999")
+    mock_repository.delete_post.return_value = True  # Simulate successful deletion
+
+    # Act
+    result = post_service.delete_post(post_id)
+
+    # Assert
+    assert result is None
