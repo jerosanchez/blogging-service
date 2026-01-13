@@ -150,6 +150,7 @@ def test_update_post_returns_204_when_no_fields_to_update():
 
 
 def test_update_post_returns_404_when_post_not_found():
+
     # Arrange
     post_id = "99999999-9999-9999-9999-999999999999"
     update_data = {"title": "Doesn't matter"}
@@ -162,3 +163,16 @@ def test_update_post_returns_404_when_post_not_found():
     assert response.status_code == HTTP_404_NOT_FOUND
     data = response.json()
     assert data["detail"] == "Post not found"
+
+
+def test_delete_post_always_returns_204():
+    # Arrange
+    post_id = "99999999-9999-9999-9999-999999999999"
+    mock_service.delete_post.return_value = None  # Service always returns None
+
+    # Act
+    response = client.delete(f"/posts/{post_id}")
+
+    # Assert
+    assert response.status_code == HTTP_204_NO_CONTENT
+    assert response.content == b""

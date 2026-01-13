@@ -1,0 +1,7 @@
+### Delete a post by ID
+DELETE http://localhost:4000/api/v1/posts/e2f1c3b4-5d6e-7a8b-9c0d-1e2f3a4b5c6d
+Accept: application/json
+
+### Example with a specific UUID
+DELETE http://localhost:4000/api/v1/posts/00000000-0000-0000-0000-000000000000
+Accept: application/json

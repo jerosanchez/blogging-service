@@ -1,7 +1,7 @@
 from typing import Any
 from uuid import uuid4
 
-from posts.models import Post
+from app.posts.domain import Post
 
 
 def build_post(**kwargs: Any) -> Post:
