@@ -4,7 +4,8 @@ from uuid import UUID
 
 import pytest
 
-from app.posts.services.dtos.post import PostCreateDTO
+from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
+from app.posts.services.exceptions.post import PostNotFoundException
 from app.posts.services.post_service import IPostRepository, PostService
 
 
@@ -109,3 +110,50 @@ def test_get_post_by_id_returns_none_when_not_found(
 
     # Assert
     assert result is None
+
+
+def test_update_post_returns_updated_post_when_valid_data(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("12345678-1234-5678-1234-567812345678")
+    update_data = PostUpdateDTO(title="Updated Title", content="Updated Content")
+    expected_post = build_post(
+        id=post_id, title="Updated Title", content="Updated Content"
+    )
+    mock_repository.update_post.return_value = expected_post
+
+    # Act
+    result = post_service.update_post(post_id, update_data)
+
+    # Assert
+    assert result == expected_post
+
+
+def test_update_post_returns_none_when_all_fields_none(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("87654321-4321-8765-4321-876543218765")
+    update_data = PostUpdateDTO()  # All fields None
+
+    # Act
+    result = post_service.update_post(post_id, update_data)
+
+    # Assert
+    mock_repository.update_post.assert_not_called()
+    assert result is None
+
+
+def test_update_post_raises_exception_when_repository_returns_none(
+    post_service: PostService, mock_repository: MagicMock
+):
+    # Arrange
+    post_id = UUID("99999999-9999-9999-9999-999999999999")
+    update_data = PostUpdateDTO(title="Doesn't matter")
+    mock_repository.update_post.return_value = None  # Simulate not found
+
+    # Act & Assert
+    with pytest.raises(PostNotFoundException) as exc_info:
+        post_service.update_post(post_id, update_data)
+    assert str(post_id) in str(exc_info.value)

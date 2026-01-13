@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from app.posts.domain.post import Post
 from app.posts.repositories.mappers.post import to_db, to_domain
 from app.posts.repositories.models.post import Post as DBPost
-from app.posts.services.exceptions.post import PostNotFoundException
 from app.posts.services.post_service import IPostRepository
 
 
@@ -30,10 +29,10 @@ class DBPostRepository(IPostRepository):
             return to_domain(db_post)
         return None
 
-    def update_post(self, post_id: UUID, post: Dict[str, Any]) -> Post:
+    def update_post(self, post_id: UUID, post: Dict[str, Any]) -> Optional[Post]:
         db_post = self._db.query(DBPost).filter(DBPost.id == post_id).first()
         if not db_post:
-            raise PostNotFoundException(f"Post with id {post_id} not found")
+            return None
         self._patch_db_post(db_post, post)
         self._db.commit()
         self._db.refresh(db_post)
