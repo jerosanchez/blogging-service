@@ -1,12 +1,13 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from starlette.status import HTTP_201_CREATED
+from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
 
 from app.core.db_engine import SessionLocal
 from app.posts.api.v1.mappers.post import to_dto
 from app.posts.api.v1.schemas.post import PostCreateRequest, PostReadResponse
 from app.posts.repositories.db_post_repository import DBPostRepository
+from app.posts.services.exceptions.post import PostNotFoundException
 from app.posts.services.post_service import IPostRepository, PostService
 
 router = APIRouter()
@@ -40,6 +41,24 @@ async def read_post(
 ):
     post = service.get_post_by_id(post_id)
     if post is None:
-        raise HTTPException(status_code=404, detail="Post not found")
+        _report_post_not_found()
 
     return post
+
+
+@router.put("/posts/{post_id}", response_model=PostReadResponse)
+async def update_post(
+    post_id: UUID,
+    post_data: PostCreateRequest,
+    service: PostService = Depends(get_post_service),
+):
+    try:
+        updated_post = service.update_post(post_id, to_dto(post_data))
+        return updated_post
+
+    except PostNotFoundException:
+        _report_post_not_found()
+
+
+def _report_post_not_found():
+    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Post not found")

@@ -20,6 +20,10 @@ class IPostRepository(ABC):
     def get_post_by_id(self, post_id: UUID) -> Optional[Post]:
         pass
 
+    @abstractmethod
+    def update_post(self, post_id: UUID, post: Post) -> Post:
+        pass
+
 
 class PostService:
     def __init__(self, repository: IPostRepository):
@@ -33,3 +37,6 @@ class PostService:
 
     def get_post_by_id(self, post_id: UUID) -> Optional[Post]:
         return self._repository.get_post_by_id(post_id)
+
+    def update_post(self, post_id: UUID, post_data: PostCreateDTO) -> Post:
+        return self._repository.update_post(post_id, to_domain(post_data))
