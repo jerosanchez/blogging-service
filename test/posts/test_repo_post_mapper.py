@@ -1,8 +1,8 @@
 import uuid
 
-from app.posts.domain.post import Post as DomainPost
-from app.posts.repositories.mappers.post import to_db, to_domain
-from app.posts.repositories.models.post import Post as DBPost
+from app.posts.domain import Post as DomainPost
+from app.posts.mappers import db_to_domain, domain_to_db
+from app.posts.models import Post as DBPost
 
 
 def test_to_db_returns_db_post_with_all_fields_when_all_fields_provided():
@@ -17,7 +17,7 @@ def test_to_db_returns_db_post_with_all_fields_when_all_fields_provided():
     )
 
     # Act
-    result = to_db(domain_post)
+    result = domain_to_db(domain_post)
 
     # Assert
     assert isinstance(result, DBPost)
@@ -40,7 +40,7 @@ def test_to_db_returns_db_post_with_defaults_when_optional_fields_missing():
     )
 
     # Act
-    result = to_db(domain_post)
+    result = domain_to_db(domain_post)
 
     # Assert
     assert isinstance(result, DBPost)
@@ -63,7 +63,7 @@ def test_to_domain_returns_domain_post_with_all_fields_when_all_fields_provided(
     )
 
     # Act
-    result = to_domain(post)
+    result = db_to_domain(post)
 
     # Assert
     assert isinstance(result, DomainPost)
@@ -85,7 +85,7 @@ def test_to_domain_returns_domain_post_with_defaults_when_optional_fields_missin
     )
 
     # Act
-    result = to_domain(post)
+    result = db_to_domain(post)
 
     # Assert
     assert isinstance(result, DomainPost)

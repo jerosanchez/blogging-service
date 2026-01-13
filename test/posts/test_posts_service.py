@@ -4,9 +4,9 @@ from uuid import UUID
 
 import pytest
 
-from app.posts.services.dtos.post import PostCreateDTO, PostUpdateDTO
-from app.posts.services.exceptions.post import PostNotFoundException
-from app.posts.services.post_service import IPostRepository, PostService
+from app.posts.dtos import PostCreateDTO, PostUpdateDTO
+from app.posts.exceptions import PostNotFoundException
+from app.posts.service import IPostRepository, PostService
 
 
 @pytest.fixture
